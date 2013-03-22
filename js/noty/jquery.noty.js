@@ -105,10 +105,8 @@ if (typeof Object.create !== 'function') {
 
             if ($.inArray('click', self.options.closeWith) > -1)
                 self.$bar.css('cursor', 'pointer').one('click', function () {
-                    if (self.options.callback.onCloseClick) {
-                        self.options.callback.onCloseClick.apply(self);
-                    }
-                    self.close();
+                    self.closeClick();
+    				self.close();
                 });
 
             if ($.inArray('hover', self.options.closeWith) > -1)
@@ -164,10 +162,11 @@ if (typeof Object.create !== 'function') {
             }
 
             self.$bar.addClass('i-am-closing-now');
-
+					
             if (self.options.callback.onClose) {
                 self.options.callback.onClose.apply(self);
             }
+
 
             self.$bar.clearQueue().stop().animate(
                 self.options.animation.close,
@@ -212,6 +211,16 @@ if (typeof Object.create !== 'function') {
 
         }, // end close
 
+        closeClick: function () {
+		
+            var self = this;
+			
+			if(self.options.onCloseClick) {
+				self.options.onCloseClick.apply(self);
+			}
+			
+		},
+		
         setText:function (text) {
             if (!this.closed) {
                 this.options.text = text;
@@ -433,7 +442,6 @@ function noty(options) {
             'onShow':'callback.onShow',
             'onShown':'callback.afterShow',
             'onClose':'callback.onClose',
-            'onCloseClick':'callback.onCloseClick',
             'onClosed':'callback.afterClose'
         };
 
@@ -488,14 +496,7 @@ function noty(options) {
     }
 
     if (!options.hasOwnProperty('dismissQueue')) {
-        if (options.layout == 'topLeft'
-            || options.layout == 'topRight'
-            || options.layout == 'bottomLeft'
-            || options.layout == 'bottomRight') {
-            options.dismissQueue = true;
-        } else {
-            options.dismissQueue = false;
-        }
+        options.dismissQueue = jQuery.noty.defaults.dismissQueue;
     }
 
     if (options.buttons) {
