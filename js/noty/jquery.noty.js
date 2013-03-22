@@ -106,7 +106,7 @@ if (typeof Object.create !== 'function') {
             if ($.inArray('click', self.options.closeWith) > -1)
                 self.$bar.css('cursor', 'pointer').one('click', function () {
                     self.closeClick();
-    				self.close();
+					self.close();
                 });
 
             if ($.inArray('hover', self.options.closeWith) > -1)
